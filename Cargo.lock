@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "xv6-rust"
+name = "kuro-os"
 version = "0.1.0"
