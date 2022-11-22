@@ -1,6 +1,6 @@
 OUTPUT_ARCH(riscv)
 
-ENTRY(_start)
+ENTRY(_entry)
 EXTERN(abort);
 
 MEMORY {
@@ -10,7 +10,7 @@ MEMORY {
 SECTIONS {
     . = 0x80000000;
     .reset : {
-        KEEP(*(.boot));
+        KEEP(*(.entry));
     } > DRAM
 
     .text : {
