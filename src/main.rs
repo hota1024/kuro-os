@@ -2,7 +2,7 @@
 #![no_main]
 
 #[allow(unused_imports)]
-use xv6_rust;
+use kuro_os;
 
 use core::panic::PanicInfo;
 #[panic_handler]
