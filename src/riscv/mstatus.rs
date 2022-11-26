@@ -1,5 +1,9 @@
 use core::arch::asm;
 
+/*
+mstatus は Machineモード での状態を表す。
+*/
+
 pub enum MPP {
     User = 0,
     Supervisor = 1,
