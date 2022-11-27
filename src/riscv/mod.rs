@@ -1,5 +1,6 @@
 pub mod medeleg;
 pub mod mepc;
+pub mod mhartid;
 pub mod mideleg;
 pub mod mret;
 pub mod mstatus;
