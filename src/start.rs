@@ -1,4 +1,4 @@
-use crate::riscv::{medeleg, mepc, mideleg, mstatus, pmp, satp, sie};
+use crate::riscv::{medeleg, mepc, mideleg, mret::mret, mstatus, pmp, satp, sie};
 
 #[no_mangle]
 pub fn start() -> ! {
@@ -43,6 +43,9 @@ pub fn start() -> ! {
     pmp::write_pmpcfg0(0xf);
     // TOR で設定したので 0 ~ 0x3fffffffffffff までのアドレスに対して PMP を適用する。
     pmp::write_pmpaddr0(0x3fffffffffffff);
+
+    // Supervisor モードに遷移(MPP で指定したモード)して rust_main を実行する。
+    mret();
 
     loop {}
 }
