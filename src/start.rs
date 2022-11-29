@@ -1,4 +1,7 @@
-use crate::riscv::{medeleg, mepc, mideleg, mret::mret, mstatus, pmp, satp, sie};
+use crate::{
+    consts::cpu,
+    riscv::{medeleg, mepc, mhartid, mideleg, mret::mret, mstatus, pmp, satp, sie},
+};
 
 #[no_mangle]
 pub fn start() -> ! {
@@ -44,8 +47,18 @@ pub fn start() -> ! {
     // TOR で設定したので 0 ~ 0x3fffffffffffff までのアドレスに対して PMP を適用する。
     pmp::write_pmpaddr0(0x3fffffffffffff);
 
+    timerinit();
+
     // Supervisor モードに遷移(MPP で指定したモード)して rust_main を実行する。
     mret();
 
     loop {}
+}
+
+static mut TIMER_SCRATCH: [usize; cpu::NCPU * 5] = [0; cpu::NCPU * 5];
+
+fn timerinit() {
+    let id = mhartid::read_mhartid();
+
+    let interval = 1000000;
 }
