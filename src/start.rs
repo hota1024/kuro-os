@@ -1,6 +1,6 @@
 use crate::{
     consts::cpu,
-    riscv::{medeleg, mepc, mhartid, mideleg, mret::mret, mstatus, pmp, satp, sie},
+    riscv::{clint, medeleg, mepc, mhartid, mideleg, mret::mret, mstatus, pmp, satp, sie},
 };
 
 #[no_mangle]
@@ -61,4 +61,7 @@ fn timerinit() {
     let id = mhartid::read_mhartid();
 
     let interval = 1000000;
+    crate::console::println!("mtimecmp: {:?}", clint::read_mtimecmp(id));
+    clint::add_mtimecmp(id, interval);
+    crate::console::println!("mtimecmp: {:?}", clint::read_mtimecmp(id));
 }

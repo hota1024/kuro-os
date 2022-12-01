@@ -1,3 +1,4 @@
+pub mod clint;
 pub mod medeleg;
 pub mod mepc;
 pub mod mhartid;
