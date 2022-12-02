@@ -1,10 +1,13 @@
 use crate::{
     consts::cpu,
-    riscv::{clint, medeleg, mepc, mhartid, mideleg, mret::mret, mstatus, pmp, satp, sie},
+    riscv::{
+        clint, medeleg, mepc, mhartid, mideleg, mret::mret, mscratch, mscratch, mstatus, pmp, satp,
+        sie,
+    },
 };
 
 #[no_mangle]
-pub fn start() -> ! {
+pub unsafe fn start() -> ! {
     // crate::rust_main::rust_main();
 
     // MPP を Supervisorモード に設定
@@ -55,13 +58,23 @@ pub fn start() -> ! {
     loop {}
 }
 
-static mut TIMER_SCRATCH: [usize; cpu::NCPU * 5] = [0; cpu::NCPU * 5];
+static mut TIMER_SCRATCH: [[usize; 5]; cpu::NCPU] = [[0; 5]; cpu::NCPU];
 
-fn timerinit() {
+unsafe fn timerinit() {
     let id = mhartid::read_mhartid();
 
+    // mtime は起動してからの経過時間
+    // mtimecmp にタイマ割り込みを行う時間を指定する。
+    // mtime が mtimecmp に到達したときにタイマ割り込みが発生する。
+
     let interval = 1000000;
-    crate::console::println!("mtimecmp: {:?}", clint::read_mtimecmp(id));
     clint::add_mtimecmp(id, interval);
-    crate::console::println!("mtimecmp: {:?}", clint::read_mtimecmp(id));
+
+    // timervec で使う scratch の準備
+    // scratch[0..2] : timervec がレジスタを退避させる空間
+    // scratch[3]    : mtimecmp のアドレス
+    // scratch[4]    : タイマ割り込みの間隔(interval)
+    TIMER_SCRATCH[id][3] = clint::read_mtimecmp(id);
+    TIMER_SCRATCH[id][4] = interval;
+    mscratch::write_mscratch(TIMER_SCRATCH[id].as_ptr() as usize);
 }
