@@ -1,8 +1,7 @@
 use crate::{
     consts::cpu,
     riscv::{
-        clint, medeleg, mepc, mhartid, mideleg, mret::mret, mscratch, mscratch, mstatus, pmp, satp,
-        sie,
+        clint, medeleg, mepc, mhartid, mideleg, mret::mret, mscratch, mstatus, pmp, satp, sie,
     },
 };
 
