@@ -32,3 +32,12 @@ pub fn set_mpp(mpp: MPP) {
     let mstatus = (mstatus & !(0b11 << 11)) | ((mpp as usize) << 11);
     write_mstatus(mstatus);
 }
+
+pub fn set_mie() {
+    let mut mstatus = read_mstatus();
+
+    // mstatus.MIE = 1 に設定(割り込みを挿入)
+    mstatus |= 1 << 3;
+
+    write_mstatus(mstatus);
+}

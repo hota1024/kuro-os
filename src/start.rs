@@ -1,7 +1,8 @@
 use crate::{
     consts::cpu,
     riscv::{
-        clint, medeleg, mepc, mhartid, mideleg, mret::mret, mscratch, mstatus, pmp, satp, sie,
+        clint, medeleg, mepc, mhartid, mideleg, mie, mret::mret, mscratch, mstatus, mtvec, pmp,
+        satp, sie,
     },
 };
 
@@ -76,4 +77,17 @@ unsafe fn timerinit() {
     TIMER_SCRATCH[id][3] = clint::read_mtimecmp(id);
     TIMER_SCRATCH[id][4] = interval;
     mscratch::write_mscratch(TIMER_SCRATCH[id].as_ptr() as usize);
+
+    extern "C" {
+        fn timervec();
+    }
+    // mtvec に timervec のアドレスを設定
+    // 割り込みが発生すると mtvec に設定されているアドレスにジャンプする。
+    mtvec::write_mtvec(timervec as usize);
+
+    // 割り込みを挿入
+    mstatus::set_mie();
+
+    // 割り込みを有効化
+    mie::set_mtie();
 }

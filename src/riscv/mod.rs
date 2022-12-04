@@ -3,6 +3,7 @@ pub mod medeleg;
 pub mod mepc;
 pub mod mhartid;
 pub mod mideleg;
+pub mod mie;
 pub mod mret;
 pub mod mscratch;
 pub mod mstatus;

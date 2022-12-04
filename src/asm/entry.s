@@ -3,10 +3,10 @@
 
 _entry:
     /* スタックの確保 */
-    la      sp, stacks + 1024
+    la sp, stacks + 1024
 
     /* start 関数の呼び出し */
-    call    start
+    call start
 
 .bss
 
