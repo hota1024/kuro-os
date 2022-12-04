@@ -46,5 +46,4 @@ macro_rules! println {
     };
 }
 
-pub(crate) use print;
 pub(crate) use println;

@@ -5,10 +5,10 @@ mstatus は Machineモード での状態を表す。
 */
 
 pub enum MPP {
-    User = 0,
+    // User = 0,
     Supervisor = 1,
     // Reserved = 2,
-    Machine = 3,
+    // Machine = 3,
 }
 
 pub fn read_mstatus() -> usize {
