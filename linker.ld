@@ -25,8 +25,9 @@ SECTIONS {
         *(.data .data.*);
     } > DRAM
 
-    _bss_start = .;
     .bss : {
         *(.bss .bss.*);
     } > DRAM
+
+    PROVIDE(end = .)
 }
