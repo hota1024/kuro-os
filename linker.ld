@@ -29,5 +29,5 @@ SECTIONS {
         *(.bss .bss.*);
     } > DRAM
 
-    PROVIDE(end = .)
+    PROVIDE(end = .);
 }
