@@ -48,7 +48,6 @@ impl BuddySystem {
         if self.actual_end - cur > block_size(self.max_size()) {
             self.nsizes += 1;
         }
-        println!("{}", self.nsizes);
 
         println!(
             "buddy system: useful memory is {:#x} bytes",
@@ -83,22 +82,20 @@ impl BuddySystem {
             info.split.as_mut_ptr().write(split_slice_ptr);
         }
 
-        println!("{:#x}", cur);
         cur = round_up(cur, LEAF_SIZE);
 
-        println!("{:#x}", self.nsizes);
-        // let meta = self.mark_meta(cur);
+        let meta = self.mark_meta(cur);
 
-        // let unavailable = self.mark_unavailable();
+        let unavailable = self.mark_unavailable();
 
-        // let free = self.init_free(cur);
+        let free = self.init_free(cur);
 
-        // if free != block_size(self.max_size()) - meta - unavailable {
-        //     panic!("buddy system: init failed");
-        // }
-        // println!("here");
+        if free != block_size(self.max_size()) - meta - unavailable {
+            panic!("buddy system: init failed");
+        }
+        println!("here");
 
-        // self.initialized = true;
+        self.initialized = true;
     }
 
     pub fn alloc(&mut self, layout: Layout) -> *mut u8 {
